@@ -3,15 +3,36 @@
         xmlns:vm="using:CosmosConsoleRemote.ViewModels"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        mc:Ignorable="d" d:DesignWidth="500" d:DesignHeight="450"
         x:Class="CosmosConsoleRemote.Views.MainWindow"
-        Icon="/Assets/avalonia-logo.ico"
-        Title="CosmosConsoleRemote">
+        Icon="/Assets/cosmosconsole.ico"
+        Title="Cosmos Console Remote"
+        WindowStartupLocation="CenterScreen">
 
     <Design.DataContext>
         <vm:MainWindowViewModel/>
     </Design.DataContext>
 
-    <TextBlock Text="{Binding Greeting}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-
+    <StackPanel Margin="10" Background="red">
+        <ScrollViewer HorizontalScrollBarVisibility="Disabled" Background="blue" >
+            
+            <TextBlock Text="{Binding Output}" 
+                       TextWrapping="Wrap" 
+                       HorizontalAlignment="Left" 
+                       VerticalAlignment="Bottom"
+                       Background="gray"/>
+            
+        </ScrollViewer>
+        
+        <StackPanel Orientation="Horizontal" Spacing="10" Background="yellow">
+            
+            <TextBlock VerticalAlignment="Center">></TextBlock>
+            <TextBox Text="{Binding CommandInput}" 
+                     Watermark="Enter command..."/>
+            <Button Content="Submit" Command="{Binding SubmitCommand}" />
+            
+        </StackPanel>
+        
+    </StackPanel>
+    
 </Window>
