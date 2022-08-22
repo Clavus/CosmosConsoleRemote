@@ -13,26 +13,26 @@
         <vm:MainWindowViewModel/>
     </Design.DataContext>
 
-    <StackPanel Margin="10" Background="red">
-        <ScrollViewer HorizontalScrollBarVisibility="Disabled" Background="blue" >
-            
-            <TextBlock Text="{Binding Output}" 
-                       TextWrapping="Wrap" 
-                       HorizontalAlignment="Left" 
-                       VerticalAlignment="Bottom"
-                       Background="gray"/>
-            
-        </ScrollViewer>
+    <DockPanel Margin="10" LastChildFill="True">
         
-        <StackPanel Orientation="Horizontal" Spacing="10" Background="yellow">
+        <StackPanel Height="30" DockPanel.Dock="Bottom" Orientation="Horizontal" Spacing="10">
             
-            <TextBlock VerticalAlignment="Center">></TextBlock>
+            <TextBlock Text=">" VerticalAlignment="Center" />
             <TextBox Text="{Binding CommandInput}" 
                      Watermark="Enter command..."/>
             <Button Content="Submit" Command="{Binding SubmitCommand}" />
             
         </StackPanel>
         
-    </StackPanel>
+        <ScrollViewer HorizontalScrollBarVisibility="Disabled" Margin="0,0,0,10" >
+            
+            <TextBlock Text="{Binding Output}" 
+                       TextWrapping="Wrap" 
+                       HorizontalAlignment="Left" 
+                       VerticalAlignment="Bottom"/>
+            
+        </ScrollViewer>
+
+    </DockPanel>
     
 </Window>
