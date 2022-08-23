@@ -3,6 +3,8 @@ using System.IO;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Avalonia.Controls;
+using Avalonia.Controls.Documents;
 using Clavusaurus.Cosmos;
 using Newtonsoft.Json;
 using ReactiveUI;
@@ -14,7 +16,6 @@ namespace CosmosConsoleRemote.ViewModels
         private const int CONSOLE_UPDATE_INTERVAL_MS = 100;
         
         private readonly CosmosConsole? console;
-        private StringBuilder outputBuilder = new StringBuilder();
         
         private string commandString = "";
         public string CommandInput { 
@@ -23,12 +24,6 @@ namespace CosmosConsoleRemote.ViewModels
         }
 
         public ICommand SubmitCommand { get; private set; }
-
-        private string outputString = "";
-        public string Output { 
-            get => outputString;
-            set => this.RaiseAndSetIfChanged(ref outputString, value);
-        }
         
         public MainWindowViewModel()
         {
@@ -67,6 +62,7 @@ namespace CosmosConsoleRemote.ViewModels
                     break;
                 
                 console.Update();
+                CosmosLog.Process();
             }
         }
 
@@ -84,23 +80,25 @@ namespace CosmosConsoleRemote.ViewModels
         
         private void OnConsoleLogEvent(string log, LogType logType)
         {
+            string line = "";
+            
             switch (logType)
             {
                 case LogType.DEFAULT:
-                    outputBuilder.AppendLine(ParseForAvalonia($"{log}"));
+                    line = ParseForAvalonia($"{log}");
                     break;
                 case LogType.ERROR:
-                    outputBuilder.AppendLine($"<color=red>{log}</color>");
+                    line = $"<color=red>{log}</color>";
                     break;
                 case LogType.EXCEPTION:
-                    outputBuilder.AppendLine($"<color=red>{log}</color>");
+                    line = $"<color=red>{log}</color>";
                     break;
                 case LogType.ECHO:
-                    outputBuilder.AppendLine($"> {log}");
+                    line = $"> {log}";
                     break;
             }
-
-            Output = outputBuilder.ToString();
+            
+            CosmosLog.AddLog(line.TrimEnd('\n').TrimEnd('\r'));
         }
 
         private string ParseForAvalonia(string input)
