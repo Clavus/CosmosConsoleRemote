@@ -18,7 +18,7 @@
         <StackPanel Height="30" DockPanel.Dock="Bottom" Orientation="Horizontal" Spacing="10">
             
             <TextBlock Text=">" VerticalAlignment="Center" />
-            <TextBox Text="{Binding CommandInput}" MinWidth="280" 
+            <TextBox x:Name="CommandInputBox" Text="{Binding CommandInput}" MinWidth="280" 
                      Watermark="Enter command..." KeyDown="Input_OnKeyDown"/>
             <Button Content="Submit" Command="{Binding SubmitCommand}" />
             

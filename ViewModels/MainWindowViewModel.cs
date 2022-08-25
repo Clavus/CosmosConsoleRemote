@@ -13,9 +13,9 @@ namespace CosmosConsoleRemote.ViewModels
 {
     public class MainWindowViewModel : ViewModelBase
     {
-        private const int CONSOLE_UPDATE_INTERVAL_MS = 100;
+        public readonly CosmosConsole Console;
         
-        private readonly CosmosConsole? console;
+        private const int CONSOLE_UPDATE_INTERVAL_MS = 100;
         
         private string commandString = "";
         public string CommandInput { 
@@ -27,27 +27,23 @@ namespace CosmosConsoleRemote.ViewModels
         
         public MainWindowViewModel()
         {
-            CosmosLogger.SetCallbacks(Console.WriteLine, Console.WriteLine, Console.WriteLine);
+            CosmosLogger.SetCallbacks(System.Console.WriteLine, System.Console.WriteLine, System.Console.WriteLine);
             
+            CommandConfig? config = null;
             try
             {
                 string json = File.ReadAllText("commandconfig.json");
-                Console.WriteLine("Read json: " + json);
-                CommandConfig? config = JsonConvert.DeserializeObject<CommandConfig>(json);
-                
-                Console.WriteLine("Config: " + config);
-                Console.WriteLine("NumCommands: " + config?.commandList.Count);
-                Console.WriteLine("NumUsers: " + config?.users.Count);
-                console = CosmosConsole.CreateNetworked(config, new LiteNetClientOnlyNetworkFactory());
-                console.SetupBuiltInCommands();
-                console.OnLogEvent += OnConsoleLogEvent;
-
-                Task.Run(ConsoleUpdateLoop);
+                config = JsonConvert.DeserializeObject<CommandConfig>(json);
             }
             catch (Exception e)
             {
-                Console.WriteLine("Exception: " + e);
+                System.Console.WriteLine("Exception when deserializing commandconfig.json: " + e);
             }
+            
+            Console = CosmosConsole.CreateNetworked(config, new LiteNetClientOnlyNetworkFactory());
+            Console.SetupBuiltInCommands();
+            Console.OnLogEvent += OnConsoleLogEvent;
+            Task.Run(ConsoleUpdateLoop);
             
             SubmitCommand = ReactiveCommand.Create(OnSubmitCommand);
         }
@@ -58,10 +54,10 @@ namespace CosmosConsoleRemote.ViewModels
             {
                 await Task.Delay(CONSOLE_UPDATE_INTERVAL_MS);
 
-                if (console == null)
+                if (Console == null)
                     break;
                 
-                console.Update();
+                Console.Update();
                 CosmosLog.Process();
             }
         }
@@ -70,11 +66,9 @@ namespace CosmosConsoleRemote.ViewModels
         {
             if (!string.IsNullOrWhiteSpace(CommandInput))
             {
-                console.Log(CommandInput, LogType.ECHO);
-                console.QueueExecuteString(CommandInput);
+                Console.Log(CommandInput, LogType.ECHO);
+                Console.QueueExecuteString(CommandInput);
                 CommandInput = "";
-                
-                Console.WriteLine("Submit command: " + CommandInput);
             }
         }
         
