@@ -3,7 +3,7 @@
         xmlns:vm="using:CosmosConsoleRemote.ViewModels"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        mc:Ignorable="d" d:DesignWidth="500" d:DesignHeight="450"
+        mc:Ignorable="d" d:DesignWidth="500" d:DesignHeight="450" MinWidth="400" MinHeight="300"
         x:Class="CosmosConsoleRemote.Views.MainWindow"
         Icon="/Assets/cosmosconsole.ico"
         Title="Cosmos Console Remote"
@@ -18,15 +18,17 @@
         <StackPanel Height="30" DockPanel.Dock="Bottom" Orientation="Horizontal" Spacing="10">
             
             <TextBlock Text=">" VerticalAlignment="Center" />
-            <TextBox Text="{Binding CommandInput}" 
-                     Watermark="Enter command..."/>
+            <TextBox Text="{Binding CommandInput}" MinWidth="280" 
+                     Watermark="Enter command..." KeyDown="Input_OnKeyDown"/>
             <Button Content="Submit" Command="{Binding SubmitCommand}" />
             
         </StackPanel>
         
         <ScrollViewer x:Name="LogScrollView" HorizontalScrollBarVisibility="Disabled" Margin="0,0,0,10" >
             <StackPanel x:Name="LogStackPanel" VerticalAlignment="Bottom" Spacing="2">
-                
+                <RichTextBlock>
+                    
+                </RichTextBlock>
             </StackPanel>
         </ScrollViewer>
 

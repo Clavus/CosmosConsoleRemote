@@ -85,7 +85,7 @@ namespace CosmosConsoleRemote.ViewModels
             switch (logType)
             {
                 case LogType.DEFAULT:
-                    line = ParseForAvalonia($"{log}");
+                    line = log;
                     break;
                 case LogType.ERROR:
                     line = $"<color=red>{log}</color>";
@@ -94,16 +94,11 @@ namespace CosmosConsoleRemote.ViewModels
                     line = $"<color=red>{log}</color>";
                     break;
                 case LogType.ECHO:
-                    line = $"> {log}";
+                    line = $"<color=gray>> {log}</color>";
                     break;
             }
             
             CosmosLog.AddLog(line.TrimEnd('\n').TrimEnd('\r'));
-        }
-
-        private string ParseForAvalonia(string input)
-        {
-            return input.Replace("\t", "    ");
         }
     }
 }

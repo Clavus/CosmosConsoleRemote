@@ -1,12 +1,9 @@
 using System;
 using Avalonia;
 using Avalonia.Controls;
-using Avalonia.Controls.Documents;
 using Avalonia.Input;
-using Avalonia.Layout;
-using Avalonia.Media;
 using Avalonia.Threading;
-using Clavusaurus.Cosmos;
+using CosmosConsoleRemote.ViewModels;
 
 namespace CosmosConsoleRemote.Views
 {
@@ -20,19 +17,12 @@ namespace CosmosConsoleRemote.Views
 
             InitializeComponent();
 
-            CosmosLog.OnProcessedLog += HandleProcessedLogReceived;
+            CosmosLog.OnProcessedTextBlock += HandleProcessedLogReceived;
             Closed += HandleClosed;
         }
 
-        private void HandleProcessedLogReceived(InlineCollection collection)
+        private void HandleProcessedLogReceived(RichTextBlock richText)
         {
-            RichTextBlock richText = new ()
-            {
-                Inlines = collection,
-                TextWrapping = TextWrapping.Wrap,
-                LineHeight = 1
-            };
-            
             LogStackPanel.Children.Add(richText);
             
             // Delay scroll till after layout update
@@ -47,7 +37,12 @@ namespace CosmosConsoleRemote.Views
             Settings.Current.sizeX = ClientSize.Width;
             Settings.Current.sizeY = ClientSize.Height;
             Settings.Save();
-            
+        }
+
+        private void Input_OnKeyDown(object? sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Return)
+                ((MainWindowViewModel) DataContext).SubmitCommand.Execute(null);
         }
     }
 }
