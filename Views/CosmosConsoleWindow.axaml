@@ -18,8 +18,8 @@
         <StackPanel Height="30" DockPanel.Dock="Bottom" Orientation="Horizontal" Spacing="10">
             
             <TextBlock Text=">" VerticalAlignment="Center" />
-            <TextBox x:Name="CommandInputBox" Text="{Binding CommandInput}" MinWidth="280" 
-                     Watermark="Enter command..." KeyDown="Input_OnKeyDown"/>
+            <AutoCompleteBox x:Name="CommandInputBox" Text="{Binding CommandInput}" MinWidth="280" 
+                     Watermark="Enter command..." KeyDown="Input_OnKeyDown" TextChanged="CommandInputBox_OnTextChanged"/>
             <Button Content="Submit" Command="{Binding SubmitCommand}" />
             
         </StackPanel>

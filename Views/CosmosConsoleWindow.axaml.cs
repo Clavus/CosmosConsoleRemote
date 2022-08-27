@@ -5,6 +5,7 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Threading;
+using Avalonia.VisualTree;
 using Clavusaurus.Cosmos;
 using CosmosConsoleRemote.ViewModels;
 
@@ -16,6 +17,7 @@ namespace CosmosConsoleRemote.Views
         private int historyIndex = 0;
 
         private CosmosConsoleViewModel viewModel;
+        private CommandAutoCompleteProvider autoCompleteProvider;
         
         public CosmosConsoleWindow()
         {
@@ -26,17 +28,28 @@ namespace CosmosConsoleRemote.Views
             InitializeComponent();
 
             Closed += HandleClosed;
-            
+
             Dispatcher.UIThread.Post(() =>
             {
                 viewModel = ((CosmosConsoleViewModel) DataContext);
                 viewModel.Console.OnLogEvent += HandleConsoleLog;
+                viewModel.Console.OnLocalCommandsChangedEvent += HandleConfigChanged;
+                viewModel.Console.OnRemoteConfigChangedEvent += HandleConfigChanged;
                 viewModel.LogParser.OnProcessedTextBlock += HandleProcessedLogReceived;
+
+                autoCompleteProvider = new CommandAutoCompleteProvider(viewModel.Console.GetCommandHints());
+                CommandInputBox_OnTextChanged(null, null);
             });
+        }
+
+        private void HandleConfigChanged()
+        {
+            autoCompleteProvider = new CommandAutoCompleteProvider(viewModel.Console.GetCommandHints());
         }
 
         private void HandleProcessedLogReceived(RichTextBlock richText)
         {
+            richText.IsTextSelectionEnabled = false;
             LogStackPanel.Children.Add(richText);
             ScrollLogToEnd();
         }
@@ -67,10 +80,10 @@ namespace CosmosConsoleRemote.Views
                 case Key.Return:
                     viewModel.SubmitCommand.Execute(null);
                     break;
-                case Key.Down:
+                case Key.PageDown:
                     MoveHistoryDown();
                     break;
-                case Key.Up:
+                case Key.PageUp:
                     MoveHistoryUp();
                     break;
             }
@@ -94,7 +107,9 @@ namespace CosmosConsoleRemote.Views
                 historyIndex--;
             
             viewModel.CommandInput = history[historyIndex];
-            CommandInputBox.CaretIndex = viewModel.CommandInput.Length;
+            
+            TextBox box = ((CommandInputBox.GetVisualChildren().First() as Grid).GetVisualChildren().First() as TextBox);
+            box.CaretIndex = box.Text.Length;
         }
 
         private void MoveHistoryDown()
@@ -106,7 +121,20 @@ namespace CosmosConsoleRemote.Views
                 historyIndex++;
             
             viewModel.CommandInput = history[historyIndex];
-            CommandInputBox.CaretIndex = viewModel.CommandInput.Length;
+            
+            TextBox box = ((CommandInputBox.GetVisualChildren().First() as Grid).GetVisualChildren().First() as TextBox);
+            box.CaretIndex = box.Text.Length;
+        }
+
+        private void CommandInputBox_OnTextChanged(object? sender, EventArgs e)
+        {
+            if (autoCompleteProvider == null || CommandInputBox.SelectedItem != null)
+                return;
+            
+            if (autoCompleteProvider.HasUpdatedSuggestions(CommandInputBox.Text, out string commandFormatHint, out List<string> suggestions))
+            {
+                CommandInputBox.Items = suggestions;
+            }
         }
     }
 }

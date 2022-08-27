@@ -14,6 +14,7 @@ namespace CosmosConsoleRemote.ViewModels
     public class CosmosConsoleViewModel : ViewModelBase
     {
         public readonly CosmosConsole Console;
+        public readonly CommandConfig Config;
         public readonly LogParser LogParser;
         
         private const int CONSOLE_UPDATE_INTERVAL_MS = 100;
@@ -46,6 +47,8 @@ namespace CosmosConsoleRemote.ViewModels
             Console = CosmosConsole.CreateNetworked(config, new LiteNetClientOnlyNetworkFactory());
             Console.SetupBuiltInCommands();
             Console.OnLogEvent += OnConsoleLogEvent;
+
+            Config = config;
             Task.Run(ConsoleUpdateLoop);
             
             SubmitCommand = ReactiveCommand.Create(OnSubmitCommand);
