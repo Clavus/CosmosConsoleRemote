@@ -10,14 +10,14 @@ using CosmosConsoleRemote.ViewModels;
 
 namespace CosmosConsoleRemote.Views
 {
-    public partial class MainWindow : Window
+    public partial class CosmosConsoleWindow : Window
     {
         private List<string> history = new List<string>();
         private int historyIndex = 0;
 
-        private MainWindowViewModel viewModel;
+        private CosmosConsoleViewModel viewModel;
         
-        public MainWindow()
+        public CosmosConsoleWindow()
         {
             Settings.Load();
             var s = Settings.Current;
@@ -25,13 +25,13 @@ namespace CosmosConsoleRemote.Views
 
             InitializeComponent();
 
-            CosmosLog.OnProcessedTextBlock += HandleProcessedLogReceived;
             Closed += HandleClosed;
             
             Dispatcher.UIThread.Post(() =>
             {
-                viewModel = ((MainWindowViewModel) DataContext);
+                viewModel = ((CosmosConsoleViewModel) DataContext);
                 viewModel.Console.OnLogEvent += HandleConsoleLog;
+                viewModel.LogParser.OnProcessedTextBlock += HandleProcessedLogReceived;
             });
         }
 

@@ -17,9 +17,9 @@ namespace CosmosConsoleRemote
         {
             if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
             {
-                desktop.MainWindow = new MainWindow
+                desktop.MainWindow = new CosmosConsoleWindow
                 {
-                    DataContext = new MainWindowViewModel(),
+                    DataContext = new CosmosConsoleViewModel(),
                 };
             }
 

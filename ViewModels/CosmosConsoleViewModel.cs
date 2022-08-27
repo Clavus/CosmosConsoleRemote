@@ -11,9 +11,10 @@ using ReactiveUI;
 
 namespace CosmosConsoleRemote.ViewModels
 {
-    public class MainWindowViewModel : ViewModelBase
+    public class CosmosConsoleViewModel : ViewModelBase
     {
         public readonly CosmosConsole Console;
+        public readonly LogParser LogParser;
         
         private const int CONSOLE_UPDATE_INTERVAL_MS = 100;
         
@@ -25,7 +26,7 @@ namespace CosmosConsoleRemote.ViewModels
 
         public ICommand SubmitCommand { get; private set; }
         
-        public MainWindowViewModel()
+        public CosmosConsoleViewModel()
         {
             CosmosLogger.SetCallbacks(System.Console.WriteLine, System.Console.WriteLine, System.Console.WriteLine);
             
@@ -39,6 +40,8 @@ namespace CosmosConsoleRemote.ViewModels
             {
                 System.Console.WriteLine("Exception when deserializing commandconfig.json: " + e);
             }
+
+            LogParser = new LogParser();
             
             Console = CosmosConsole.CreateNetworked(config, new LiteNetClientOnlyNetworkFactory());
             Console.SetupBuiltInCommands();
@@ -58,7 +61,7 @@ namespace CosmosConsoleRemote.ViewModels
                     break;
                 
                 Console.Update();
-                CosmosLog.Process();
+                LogParser.Process();
             }
         }
 
@@ -92,7 +95,7 @@ namespace CosmosConsoleRemote.ViewModels
                     break;
             }
             
-            CosmosLog.AddLog(line.TrimEnd('\n').TrimEnd('\r'));
+            LogParser.AddLog(line.TrimEnd('\n').TrimEnd('\r'));
         }
     }
 }

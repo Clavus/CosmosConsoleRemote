@@ -10,24 +10,24 @@ using Avalonia.Threading;
 
 namespace CosmosConsoleRemote
 {
-    public static class CosmosLog
+    public class LogParser
     {
-        public static event Action<RichTextBlock> OnProcessedTextBlock;
+        public event Action<RichTextBlock> OnProcessedTextBlock;
 
-        private static ConcurrentQueue<string> textToProcess = new ();
+        private ConcurrentQueue<string> textToProcess = new ();
         
-        public static void AddLog(string text)
+        public void AddLog(string text)
         {
             textToProcess.Enqueue(text);
         }
 
-        public static async void Process()
+        public async void Process()
         {
             while (textToProcess.TryDequeue(out string? text))
                 await ProcessText(text);
         }
 
-        private static Task ProcessText(string text)
+        private Task ProcessText(string text)
         {
             return Dispatcher.UIThread.InvokeAsync(() =>
             {
