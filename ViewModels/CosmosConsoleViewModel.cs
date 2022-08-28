@@ -40,6 +40,7 @@ namespace CosmosConsoleRemote.ViewModels
             catch (Exception e)
             {
                 System.Console.WriteLine("Exception when deserializing commandconfig.json: " + e);
+                config = new CommandConfig();
             }
 
             LogParser = new LogParser();

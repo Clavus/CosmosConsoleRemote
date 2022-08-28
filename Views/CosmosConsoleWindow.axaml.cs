@@ -1,9 +1,15 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Avalonia;
+using Avalonia.Animation;
+using Avalonia.Animation.Easings;
 using Avalonia.Controls;
 using Avalonia.Input;
+using Avalonia.Interactivity;
+using Avalonia.Layout;
+using Avalonia.Styling;
 using Avalonia.Threading;
 using Avalonia.VisualTree;
 using Clavusaurus.Cosmos;
@@ -18,6 +24,9 @@ namespace CosmosConsoleRemote.Views
 
         private CosmosConsoleViewModel viewModel;
         private CommandAutoCompleteProvider autoCompleteProvider;
+
+        private Animation connectionPanelAnimation;
+        private bool panelOpened;
         
         public CosmosConsoleWindow()
         {
@@ -40,6 +49,27 @@ namespace CosmosConsoleRemote.Views
                 autoCompleteProvider = new CommandAutoCompleteProvider(viewModel.Console.GetCommandHints());
                 CommandInputBox_OnTextChanged(null, null);
             });
+
+            connectionPanelAnimation = new Animation()
+            {
+                Duration = TimeSpan.FromSeconds(.2),
+                Children =
+                {
+                    new KeyFrame()
+                    {
+                        Setters = {new Setter(WidthProperty, 50d)},
+                        KeyTime = TimeSpan.FromSeconds(0)
+                    },
+                    new KeyFrame()
+                    {
+                        Setters = {new Setter(WidthProperty, 300d)},
+                        KeyTime = TimeSpan.FromSeconds(.2)
+                    }
+                },
+                Easing = new CubicEaseOut(),
+                FillMode = FillMode.Forward,
+                PlaybackDirection = PlaybackDirection.Normal,
+            };
         }
 
         private void HandleConfigChanged()
@@ -135,6 +165,16 @@ namespace CosmosConsoleRemote.Views
             {
                 CommandInputBox.Items = suggestions;
             }
+        }
+
+        private void ConnectionPanelButton_OnClick(object? sender, RoutedEventArgs e)
+        {
+            Dispatcher.UIThread.Post(async () =>
+            {
+                panelOpened = !panelOpened;
+                connectionPanelAnimation.PlaybackDirection = (panelOpened ? PlaybackDirection.Normal : PlaybackDirection.Reverse);
+                await connectionPanelAnimation.RunAsync(ConnectionPanel, null);
+            });
         }
     }
 }

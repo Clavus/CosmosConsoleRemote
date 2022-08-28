@@ -13,25 +13,81 @@
         <vm:CosmosConsoleViewModel/>
     </Design.DataContext>
 
-    <DockPanel Margin="10" LastChildFill="True">
+    <DockPanel LastChildFill="True">
         
-        <StackPanel Height="30" DockPanel.Dock="Bottom" Orientation="Horizontal" Spacing="10">
+        <StackPanel Margin="0,5,5,0" x:Name="ConnectionPanel" DockPanel.Dock="Right" Width="50">
             
-            <TextBlock Text=">" VerticalAlignment="Center" />
-            <AutoCompleteBox x:Name="CommandInputBox" Text="{Binding CommandInput}" MinWidth="280" 
-                     Watermark="Enter command..." KeyDown="Input_OnKeyDown" TextChanged="CommandInputBox_OnTextChanged"/>
-            <Button Content="Submit" Command="{Binding SubmitCommand}" />
+            <StackPanel Orientation="Horizontal" Spacing="5">
+                <Button VerticalAlignment="Top" Width="50" Click="ConnectionPanelButton_OnClick"><Image Source="../Assets/aerial-signal.png" /></Button>
+                <StackPanel Spacing="5">
+                    
+                    <TextBlock FontWeight="Bold">Remote: Not Connected</TextBlock>
+                    
+                    <StackPanel x:Name="ConnectionTypePanel" IsVisible="True" Spacing="5">
+                        <TextBlock>Remote connect using:</TextBlock>
+                        <StackPanel Orientation="Horizontal" Spacing="5">
+                            <Button Width="125">Local network</Button>
+                            <Button Width="120">Direct IP</Button>
+                        </StackPanel>
+                    </StackPanel>
+                    
+                    <StackPanel  x:Name="ConnectionLocalIPPanel" IsVisible="False" Spacing="5">
+                        <StackPanel Orientation="Horizontal" Spacing="5">
+                            <TextBlock VerticalAlignment="Center" Width="175">Select local IP:</TextBlock>
+                            <Button Width="70">Back</Button>
+                        </StackPanel>
+                        
+                        <StackPanel Orientation="Horizontal" Spacing="5">
+                            <ComboBox Width="175">
+                                <ComboBoxItem>Inline Items</ComboBoxItem>
+                                <ComboBoxItem>Inline Item 2</ComboBoxItem>
+                                <ComboBoxItem>Inline Item 3</ComboBoxItem>
+                                <ComboBoxItem>Inline Item 4</ComboBoxItem>
+                            </ComboBox>
+                            <Button Width="70">Refresh</Button>
+                        </StackPanel>
+                        
+                        <Button Width="250" Height="40">Connect</Button>
+                    </StackPanel>
+                    
+                    <StackPanel  x:Name="ConnectionDirectIPPanel" IsVisible="False" Spacing="5">
+                        <StackPanel Orientation="Horizontal" Spacing="5">
+                            <TextBlock VerticalAlignment="Center" Width="175">Enter valid IP:</TextBlock>
+                            <Button Width="70">Back</Button>
+                        </StackPanel>
+                        
+                        <StackPanel Orientation="Horizontal" Spacing="5">
+                            <TextBox Watermark="Enter IP..." Width="213"></TextBox>
+                            <Image Width="32" Height="32"></Image>
+                        </StackPanel>
+                        
+                        <Button Width="250" Height="40">Connect</Button>
+                    </StackPanel>
+                    
+                </StackPanel>
+            </StackPanel>
             
         </StackPanel>
         
-        <ScrollViewer x:Name="LogScrollView" HorizontalScrollBarVisibility="Disabled" Margin="0,0,0,10" >
-            <StackPanel x:Name="LogStackPanel" VerticalAlignment="Bottom" Spacing="2">
-                <RichTextBlock>
-                    
-                </RichTextBlock>
+        <DockPanel Margin="10" LastChildFill="True">
+            
+            <StackPanel Height="30" DockPanel.Dock="Bottom" Orientation="Horizontal" Spacing="10">
+                
+                <TextBlock Text=">" VerticalAlignment="Center" />
+                <AutoCompleteBox x:Name="CommandInputBox" Text="{Binding CommandInput}" MinWidth="280" 
+                         Watermark="Enter command..." KeyDown="Input_OnKeyDown" TextChanged="CommandInputBox_OnTextChanged"/>
+                <Button Content="Submit" Command="{Binding SubmitCommand}" />
+                
             </StackPanel>
-        </ScrollViewer>
-
+            
+            <ScrollViewer x:Name="LogScrollView" HorizontalScrollBarVisibility="Disabled" Margin="0,0,0,10" >
+                <StackPanel x:Name="LogStackPanel" VerticalAlignment="Bottom" Spacing="2">
+                    <RichTextBlock>
+                        
+                    </RichTextBlock>
+                </StackPanel>
+            </ScrollViewer>
+            
+        </DockPanel>
     </DockPanel>
-    
 </Window>
