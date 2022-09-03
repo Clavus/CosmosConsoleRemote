@@ -19,6 +19,10 @@ namespace CosmosConsoleRemote.Views
 {
     public partial class CosmosConsoleWindow : Window
     {
+        private enum RemoteConnectState
+        {
+            None, Local, Direct, Connected
+        }
         private List<string> history = new List<string>();
         private int historyIndex = 0;
 
@@ -27,6 +31,7 @@ namespace CosmosConsoleRemote.Views
 
         private Animation connectionPanelAnimation;
         private bool panelOpened;
+        private RemoteConnectState remoteConnectState;
         
         public CosmosConsoleWindow()
         {
@@ -176,5 +181,31 @@ namespace CosmosConsoleRemote.Views
                 await connectionPanelAnimation.RunAsync(ConnectionPanel, null);
             });
         }
+
+        private void NetworkSelectLocal_OnClick(object? sender, RoutedEventArgs e)
+        {
+            remoteConnectState = RemoteConnectState.Local;
+            UpdateNetworkUIControls();
+        }
+
+        private void NetworkSelectDirect_OnClick(object? sender, RoutedEventArgs e)
+        {
+            remoteConnectState = RemoteConnectState.Direct;
+            UpdateNetworkUIControls();
+        }
+
+        private void NetworkBackButton_OnClick(object? sender, RoutedEventArgs e)
+        {
+            remoteConnectState = RemoteConnectState.None;
+            UpdateNetworkUIControls();
+        }
+        
+        private void UpdateNetworkUIControls()
+        {
+            ConnectionTypePanel.IsVisible = (remoteConnectState == RemoteConnectState.None);
+            ConnectionLocalIPPanel.IsVisible = (remoteConnectState == RemoteConnectState.Local);
+            ConnectionDirectIPPanel.IsVisible = (remoteConnectState == RemoteConnectState.Direct);
+        }
+
     }
 }

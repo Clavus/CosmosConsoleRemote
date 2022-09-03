@@ -3,6 +3,7 @@
         xmlns:vm="using:CosmosConsoleRemote.ViewModels"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:material="using:Material.Icons.Avalonia"
         mc:Ignorable="d" d:DesignWidth="500" d:DesignHeight="450" MinWidth="400" MinHeight="300"
         x:Class="CosmosConsoleRemote.Views.CosmosConsoleWindow"
         Icon="/Assets/cosmosconsole.ico"
@@ -19,49 +20,60 @@
             
             <StackPanel Orientation="Horizontal" Spacing="5">
                 <Button VerticalAlignment="Top" Width="50" Click="ConnectionPanelButton_OnClick"><Image Source="../Assets/aerial-signal.png" /></Button>
+                <Panel Width="2" Background="gray"></Panel>
                 <StackPanel Spacing="5">
                     
-                    <TextBlock FontWeight="Bold">Remote: Not Connected</TextBlock>
+                    <TextBlock FontWeight="Bold" Margin="0,0,0,16">Remote: Not Connected</TextBlock>
                     
                     <StackPanel x:Name="ConnectionTypePanel" IsVisible="True" Spacing="5">
                         <TextBlock>Remote connect using:</TextBlock>
                         <StackPanel Orientation="Horizontal" Spacing="5">
-                            <Button Width="125">Local network</Button>
-                            <Button Width="120">Direct IP</Button>
+                            <Button Width="117" Click="NetworkSelectLocal_OnClick">Local IP</Button>
+                            <Button Width="117" Click="NetworkSelectDirect_OnClick">Direct Address</Button>
                         </StackPanel>
                     </StackPanel>
                     
                     <StackPanel  x:Name="ConnectionLocalIPPanel" IsVisible="False" Spacing="5">
                         <StackPanel Orientation="Horizontal" Spacing="5">
-                            <TextBlock VerticalAlignment="Center" Width="175">Select local IP:</TextBlock>
-                            <Button Width="70">Back</Button>
+                            <TextBlock VerticalAlignment="Center" Width="200">Select local IP:</TextBlock>
+                            <Button Width="35" Click="NetworkBackButton_OnClick"><material:MaterialIcon Kind="ArrowLeft"></material:MaterialIcon></Button>
                         </StackPanel>
                         
                         <StackPanel Orientation="Horizontal" Spacing="5">
-                            <ComboBox Width="175">
+                            <ComboBox Width="200">
                                 <ComboBoxItem>Inline Items</ComboBoxItem>
                                 <ComboBoxItem>Inline Item 2</ComboBoxItem>
                                 <ComboBoxItem>Inline Item 3</ComboBoxItem>
                                 <ComboBoxItem>Inline Item 4</ComboBoxItem>
                             </ComboBox>
-                            <Button Width="70">Refresh</Button>
+                            <Button Width="35"><material:MaterialIcon Kind="Refresh"></material:MaterialIcon></Button>
                         </StackPanel>
                         
-                        <Button Width="250" Height="40">Connect</Button>
+                        <Button Width="240" Height="40" Margin="0,16,0,0">
+                            <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Orientation="Horizontal" Spacing="10">
+                                <TextBlock>Connect</TextBlock>
+                                <material:MaterialIcon Kind="LanConnect"></material:MaterialIcon>
+                            </StackPanel>
+                        </Button>
                     </StackPanel>
                     
                     <StackPanel  x:Name="ConnectionDirectIPPanel" IsVisible="False" Spacing="5">
                         <StackPanel Orientation="Horizontal" Spacing="5">
-                            <TextBlock VerticalAlignment="Center" Width="175">Enter valid IP:</TextBlock>
-                            <Button Width="70">Back</Button>
+                            <TextBlock VerticalAlignment="Center" Width="200">Enter valid host / IP:</TextBlock>
+                            <Button Width="35" Click="NetworkBackButton_OnClick"><material:MaterialIcon Kind="ArrowLeft"></material:MaterialIcon></Button>
                         </StackPanel>
                         
                         <StackPanel Orientation="Horizontal" Spacing="5">
-                            <TextBox Watermark="Enter IP..." Width="213"></TextBox>
+                            <TextBox Watermark="Enter IP..." Width="240"></TextBox>
                             <Image Width="32" Height="32"></Image>
                         </StackPanel>
                         
-                        <Button Width="250" Height="40">Connect</Button>
+                        <Button Width="240" Height="40" Margin="0,16,0,0">
+                            <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Orientation="Horizontal" Spacing="10">
+                            <TextBlock>Connect</TextBlock>
+                            <material:MaterialIcon Kind="LanConnect"></material:MaterialIcon>
+                            </StackPanel>
+                        </Button>
                     </StackPanel>
                     
                 </StackPanel>
@@ -76,7 +88,7 @@
                 <TextBlock Text=">" VerticalAlignment="Center" />
                 <AutoCompleteBox x:Name="CommandInputBox" Text="{Binding CommandInput}" MinWidth="280" 
                          Watermark="Enter command..." KeyDown="Input_OnKeyDown" TextChanged="CommandInputBox_OnTextChanged"/>
-                <Button Content="Submit" Command="{Binding SubmitCommand}" />
+                <Button Content="Send" Command="{Binding SubmitCommand}" />
                 
             </StackPanel>
             
