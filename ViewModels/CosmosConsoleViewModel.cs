@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -25,8 +26,17 @@ namespace CosmosConsoleRemote.ViewModels
             set => this.RaiseAndSetIfChanged(ref commandString, value);
         }
 
-        public ICommand SubmitCommand { get; private set; }
+        private string addressInput = "";
+        public string AddressInput
+        {
+            get => addressInput;
+            set => this.RaiseAndSetIfChanged(ref addressInput, value);
+        }
         
+        public ICommand SubmitCommand { get; }
+        public ICommand ConnectLocalCommand { get; }
+        public ICommand ConnectDirectCommand { get; }
+
         public CosmosConsoleViewModel()
         {
             CosmosLogger.SetCallbacks(System.Console.WriteLine, System.Console.WriteLine, System.Console.WriteLine);
@@ -53,8 +63,10 @@ namespace CosmosConsoleRemote.ViewModels
             Task.Run(ConsoleUpdateLoop);
             
             SubmitCommand = ReactiveCommand.Create(OnSubmitCommand);
+            ConnectLocalCommand = ReactiveCommand.Create(OnConnectLocalCommand);
+            ConnectDirectCommand = ReactiveCommand.Create(OnConnectDirectCommand);
         }
-
+        
         private async void ConsoleUpdateLoop()
         {
             while (true)
@@ -77,6 +89,30 @@ namespace CosmosConsoleRemote.ViewModels
                 Console.QueueExecuteString(CommandInput);
                 CommandInput = "";
             }
+        }
+        
+        private void OnConnectLocalCommand()
+        {
+            
+        }
+        
+        private void OnConnectDirectCommand()
+        {
+            string hostToParse = addressInput;
+
+            ushort port = Console.RemotePort;
+            string[] hostSplit = hostToParse.Split(':'); // Allow for "123.4.5.6:7890" host string format to add port
+                        
+            if (hostSplit.Length > 1 && ushort.TryParse(hostSplit[1], out ushort parsedPort))
+            {
+                port = parsedPort;
+                hostToParse = hostSplit[0];
+            }
+                        
+            if (Network.ResolveHost(hostToParse, port, out IPEndPoint endPoint)) 
+                CosmosUtility.ConnectClientToServerRoutine(Console, endPoint, new UserCredentials());
+            else
+                Console.Log($"Invalid host / IP \"{addressInput}\"");
         }
         
         private void OnConsoleLogEvent(string log, LogType logType)

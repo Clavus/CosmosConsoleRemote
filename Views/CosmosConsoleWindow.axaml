@@ -49,7 +49,8 @@
                             <Button Width="35"><material:MaterialIcon Kind="Refresh" /></Button>
                         </StackPanel>
                         
-                        <Button Width="240" Height="40" Margin="0,16,0,0">
+                        <Button Width="240" Height="40" Margin="0,16,0,0"
+                                Command="{Binding ConnectLocalCommand}">
                             <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Orientation="Horizontal" Spacing="10">
                                 <TextBlock>Connect</TextBlock>
                                 <material:MaterialIcon Kind="LanConnect"></material:MaterialIcon>
@@ -64,11 +65,12 @@
                         </StackPanel>
                         
                         <StackPanel Orientation="Horizontal" Spacing="5">
-                            <TextBox Watermark="Enter IP..." Width="240"></TextBox>
+                            <TextBox Text="{Binding AddressInput}" Watermark="Enter IP..." Width="240"></TextBox>
                             <Image Width="32" Height="32"></Image>
                         </StackPanel>
                         
-                        <Button Width="240" Height="40" Margin="0,16,0,0">
+                        <Button Width="240" Height="40" Margin="0,16,0,0" 
+                                Command="{Binding ConnectDirectCommand}">
                             <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Orientation="Horizontal" Spacing="10">
                             <TextBlock>Connect</TextBlock>
                             <material:MaterialIcon Kind="LanConnect" />
