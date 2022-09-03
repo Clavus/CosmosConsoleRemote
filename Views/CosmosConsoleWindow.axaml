@@ -16,10 +16,10 @@
 
     <DockPanel LastChildFill="True">
         
-        <StackPanel Margin="0,5,5,0" x:Name="ConnectionPanel" DockPanel.Dock="Right" Width="50">
+        <StackPanel Margin="0,5,5,0" x:Name="ConnectionPanel" DockPanel.Dock="Right" Width="30">
             
             <StackPanel Orientation="Horizontal" Spacing="5">
-                <Button VerticalAlignment="Top" Width="50" Click="ConnectionPanelButton_OnClick"><Image Source="../Assets/aerial-signal.png" /></Button>
+                <Button VerticalAlignment="Top" Width="30" Click="ConnectionPanelButton_OnClick"><material:MaterialIcon Kind="Broadcast" /></Button>
                 <Panel Width="2" Background="gray"></Panel>
                 <StackPanel Spacing="5">
                     
@@ -36,7 +36,7 @@
                     <StackPanel  x:Name="ConnectionLocalIPPanel" IsVisible="False" Spacing="5">
                         <StackPanel Orientation="Horizontal" Spacing="5">
                             <TextBlock VerticalAlignment="Center" Width="200">Select local IP:</TextBlock>
-                            <Button Width="35" Click="NetworkBackButton_OnClick"><material:MaterialIcon Kind="ArrowLeft"></material:MaterialIcon></Button>
+                            <Button Width="35" Click="NetworkBackButton_OnClick"><material:MaterialIcon Kind="ArrowLeft" /></Button>
                         </StackPanel>
                         
                         <StackPanel Orientation="Horizontal" Spacing="5">
@@ -46,7 +46,7 @@
                                 <ComboBoxItem>Inline Item 3</ComboBoxItem>
                                 <ComboBoxItem>Inline Item 4</ComboBoxItem>
                             </ComboBox>
-                            <Button Width="35"><material:MaterialIcon Kind="Refresh"></material:MaterialIcon></Button>
+                            <Button Width="35"><material:MaterialIcon Kind="Refresh" /></Button>
                         </StackPanel>
                         
                         <Button Width="240" Height="40" Margin="0,16,0,0">
@@ -60,7 +60,7 @@
                     <StackPanel  x:Name="ConnectionDirectIPPanel" IsVisible="False" Spacing="5">
                         <StackPanel Orientation="Horizontal" Spacing="5">
                             <TextBlock VerticalAlignment="Center" Width="200">Enter valid host / IP:</TextBlock>
-                            <Button Width="35" Click="NetworkBackButton_OnClick"><material:MaterialIcon Kind="ArrowLeft"></material:MaterialIcon></Button>
+                            <Button Width="35" Click="NetworkBackButton_OnClick"><material:MaterialIcon Kind="ArrowLeft" /></Button>
                         </StackPanel>
                         
                         <StackPanel Orientation="Horizontal" Spacing="5">
@@ -71,7 +71,7 @@
                         <Button Width="240" Height="40" Margin="0,16,0,0">
                             <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Orientation="Horizontal" Spacing="10">
                             <TextBlock>Connect</TextBlock>
-                            <material:MaterialIcon Kind="LanConnect"></material:MaterialIcon>
+                            <material:MaterialIcon Kind="LanConnect" />
                             </StackPanel>
                         </Button>
                     </StackPanel>
@@ -83,13 +83,13 @@
         
         <DockPanel Margin="10" LastChildFill="True">
             
-            <StackPanel Height="30" DockPanel.Dock="Bottom" Orientation="Horizontal" Spacing="10">
+            <StackPanel Height="30" DockPanel.Dock="Bottom" Orientation="Horizontal" Spacing="5">
                 
                 <TextBlock Text=">" VerticalAlignment="Center" />
                 <AutoCompleteBox x:Name="CommandInputBox" Text="{Binding CommandInput}" MinWidth="280" 
                          Watermark="Enter command..." KeyDown="Input_OnKeyDown" TextChanged="CommandInputBox_OnTextChanged"/>
                 <Button Content="Send" Command="{Binding SubmitCommand}" />
-                
+                <Button HorizontalAlignment="Right" Width="35" Click="ClearButton_OnClick"><material:MaterialIcon Kind="NotificationClearAll" /></Button>
             </StackPanel>
             
             <ScrollViewer x:Name="LogScrollView" HorizontalScrollBarVisibility="Disabled" Margin="0,0,0,10" >

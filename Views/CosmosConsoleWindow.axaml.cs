@@ -62,12 +62,12 @@ namespace CosmosConsoleRemote.Views
                 {
                     new KeyFrame()
                     {
-                        Setters = {new Setter(WidthProperty, 50d)},
+                        Setters = {new Setter(WidthProperty, 30d)},
                         KeyTime = TimeSpan.FromSeconds(0)
                     },
                     new KeyFrame()
                     {
-                        Setters = {new Setter(WidthProperty, 300d)},
+                        Setters = {new Setter(WidthProperty, 280d)},
                         KeyTime = TimeSpan.FromSeconds(.2)
                     }
                 },
@@ -207,5 +207,9 @@ namespace CosmosConsoleRemote.Views
             ConnectionDirectIPPanel.IsVisible = (remoteConnectState == RemoteConnectState.Direct);
         }
 
+        private void ClearButton_OnClick(object? sender, RoutedEventArgs e)
+        {
+            LogStackPanel.Children.Clear();
+        }
     }
 }
