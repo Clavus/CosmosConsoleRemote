@@ -23,7 +23,7 @@
                 <Panel Width="2" Background="gray"></Panel>
                 <StackPanel Spacing="5">
                     
-                    <TextBlock FontWeight="Bold" Margin="0,0,0,16">Remote: Not Connected</TextBlock>
+                    <TextBlock Text="{Binding ConnectionPanelTitle}" FontWeight="Bold" Margin="0,0,0,16" />
                     
                     <StackPanel x:Name="ConnectionTypePanel" IsVisible="True" Spacing="5">
                         <TextBlock>Remote connect using:</TextBlock>
@@ -40,13 +40,9 @@
                         </StackPanel>
                         
                         <StackPanel Orientation="Horizontal" Spacing="5">
-                            <ComboBox Width="200">
-                                <ComboBoxItem>Inline Items</ComboBoxItem>
-                                <ComboBoxItem>Inline Item 2</ComboBoxItem>
-                                <ComboBoxItem>Inline Item 3</ComboBoxItem>
-                                <ComboBoxItem>Inline Item 4</ComboBoxItem>
-                            </ComboBox>
-                            <Button Width="35"><material:MaterialIcon Kind="Refresh" /></Button>
+                            <ComboBox x:Name="LanAddressesBox" Items="{Binding AvailableLanAddresses}" 
+                                      SelectedItem="{Binding SelectedLanAddress}" Width="200" />
+                            <Button Width="35" Click="LanRefresh_OnClick"><material:MaterialIcon Kind="Refresh" /></Button>
                         </StackPanel>
                         
                         <Button Width="240" Height="40" Margin="0,16,0,0"
@@ -74,6 +70,16 @@
                             <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Orientation="Horizontal" Spacing="10">
                             <TextBlock>Connect</TextBlock>
                             <material:MaterialIcon Kind="LanConnect" />
+                            </StackPanel>
+                        </Button>
+                    </StackPanel>
+                    
+                    <StackPanel x:Name="ConnectionConnectedPanel" IsVisible="True" Spacing="5">
+                        <TextBlock Text="{Binding ConnectedAddressText}">Connected to:</TextBlock>
+                        <Button Width="240" Height="40" Command="{Binding DisconnectCommand}">
+                            <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Orientation="Horizontal" Spacing="10">
+                                <TextBlock>Disconnect</TextBlock>
+                                <material:MaterialIcon Kind="LanDisconnect"></material:MaterialIcon>
                             </StackPanel>
                         </Button>
                     </StackPanel>

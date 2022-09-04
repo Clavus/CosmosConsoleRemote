@@ -1,14 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Animation;
 using Avalonia.Animation.Easings;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
-using Avalonia.Layout;
 using Avalonia.Styling;
 using Avalonia.Threading;
 using Avalonia.VisualTree;
@@ -50,7 +48,8 @@ namespace CosmosConsoleRemote.Views
                 viewModel.Console.OnLocalCommandsChangedEvent += HandleConfigChanged;
                 viewModel.Console.OnRemoteConfigChangedEvent += HandleConfigChanged;
                 viewModel.LogParser.OnProcessedTextBlock += HandleProcessedLogReceived;
-
+                viewModel.OnConnectionStatusChanged += HandleViewModelConnectionStatusChanged;
+                
                 autoCompleteProvider = new CommandAutoCompleteProvider(viewModel.Console.GetCommandHints());
                 CommandInputBox_OnTextChanged(null, null);
             });
@@ -77,6 +76,12 @@ namespace CosmosConsoleRemote.Views
             };
         }
 
+        private void HandleViewModelConnectionStatusChanged()
+        {
+            remoteConnectState = viewModel.IsConnected ? RemoteConnectState.Connected : RemoteConnectState.None;
+            Dispatcher.UIThread.Post(UpdateNetworkUIControls);
+        }
+
         private void HandleConfigChanged()
         {
             autoCompleteProvider = new CommandAutoCompleteProvider(viewModel.Console.GetCommandHints());
@@ -101,6 +106,7 @@ namespace CosmosConsoleRemote.Views
             }
         }
         
+
         private void HandleClosed(object? sender, EventArgs e)
         {
             Settings.Current.sizeX = ClientSize.Width;
@@ -186,6 +192,7 @@ namespace CosmosConsoleRemote.Views
         {
             remoteConnectState = RemoteConnectState.Local;
             UpdateNetworkUIControls();
+            LanRefresh_OnClick(null, null);
         }
 
         private void NetworkSelectDirect_OnClick(object? sender, RoutedEventArgs e)
@@ -205,8 +212,15 @@ namespace CosmosConsoleRemote.Views
             ConnectionTypePanel.IsVisible = (remoteConnectState == RemoteConnectState.None);
             ConnectionLocalIPPanel.IsVisible = (remoteConnectState == RemoteConnectState.Local);
             ConnectionDirectIPPanel.IsVisible = (remoteConnectState == RemoteConnectState.Direct);
+            ConnectionConnectedPanel.IsVisible = (remoteConnectState == RemoteConnectState.Connected);
         }
 
+        private void LanRefresh_OnClick(object? sender, RoutedEventArgs e)
+        {
+            viewModel.AvailableLanAddresses.Clear();
+            Network.RefreshLocalServerListing(viewModel.Console, viewModel.Console.RemotePort, 3000);
+        }
+        
         private void ClearButton_OnClick(object? sender, RoutedEventArgs e)
         {
             LogStackPanel.Children.Clear();
