@@ -54,6 +54,20 @@ namespace CosmosConsoleRemote.ViewModels
             set => this.RaiseAndSetIfChanged(ref connectedAddressText, value);
         }
         
+        private string credentialsUsername;
+        public string CredentialsUsername
+        {
+            get => credentialsUsername;
+            set => this.RaiseAndSetIfChanged(ref credentialsUsername, value);
+        }
+
+        private string credentialsPassword;
+        public string CredentialsPassword
+        {
+            get => credentialsPassword;
+            set => this.RaiseAndSetIfChanged(ref credentialsPassword, value);
+        }
+        
         public ICommand SubmitCommand { get; }
         public ICommand ConnectLocalCommand { get; }
         public ICommand ConnectDirectCommand { get; }
@@ -72,7 +86,7 @@ namespace CosmosConsoleRemote.ViewModels
                 }
             }
         }
-        
+
         private const int CONSOLE_UPDATE_INTERVAL_MS = 100;
         
         private const string REMOTE_ATTEMPT_CONNECT = "Remote: Attempting Connection";
@@ -169,7 +183,11 @@ namespace CosmosConsoleRemote.ViewModels
         {
             ConnectionPanelTitle = REMOTE_ATTEMPT_CONNECT;
                 
-            await CosmosUtility.ConnectClientToServerRoutine(Console, endPoint, new UserCredentials());
+            await CosmosUtility.ConnectClientToServerRoutine(Console, endPoint, new UserCredentials()
+            {
+                username = CredentialsUsername,
+                password = CredentialsPassword
+            });
 
             IsConnected = (Console.Networker.NetworkMode == NetworkMode.CLIENT && Console.Networker.Client.IsConnected);
             if (IsConnected)

@@ -45,6 +45,12 @@
                             <Button Width="35" Click="LanRefresh_OnClick"><material:MaterialIcon Kind="Refresh" /></Button>
                         </StackPanel>
                         
+                        <TextBlock>Remote Username</TextBlock>
+                        <TextBox Text="{Binding CredentialsUsername}" Width="240" HorizontalAlignment="Left" />
+                        
+                        <TextBlock>Remote Password</TextBlock>
+                        <TextBox Text="{Binding CredentialsPassword}" PasswordChar="*" Width="240" HorizontalAlignment="Left" />
+
                         <Button Width="240" Height="40" Margin="0,16,0,0"
                                 Command="{Binding ConnectLocalCommand}">
                             <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Orientation="Horizontal" Spacing="10">
@@ -64,6 +70,12 @@
                             <TextBox Text="{Binding AddressInput}" Watermark="Enter IP..." Width="240"></TextBox>
                             <Image Width="32" Height="32"></Image>
                         </StackPanel>
+                        
+                        <TextBlock>Remote Username</TextBlock>
+                        <TextBox Text="{Binding CredentialsUsername}" Width="240" HorizontalAlignment="Left" />
+                        
+                        <TextBlock>Remote Password</TextBlock>
+                        <TextBox Text="{Binding CredentialsPassword}" PasswordChar="*" Width="240" HorizontalAlignment="Left" />
                         
                         <Button Width="240" Height="40" Margin="0,16,0,0" 
                                 Command="{Binding ConnectDirectCommand}">
