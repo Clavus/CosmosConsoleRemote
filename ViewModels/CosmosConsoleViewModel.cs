@@ -15,7 +15,7 @@ namespace CosmosConsoleRemote.ViewModels
         public event Action OnConnectionStatusChanged;
         
         public readonly CosmosConsole Console;
-        public readonly CommandConfig Config;
+        public readonly CosmosConsoleConfig Config;
         public readonly LogParser LogParser;
         
         private string commandString = "";
@@ -97,16 +97,16 @@ namespace CosmosConsoleRemote.ViewModels
         {
             CosmosLogger.SetCallbacks(System.Console.WriteLine, System.Console.WriteLine, System.Console.WriteLine);
             
-            CommandConfig? config = null;
+            CosmosConsoleConfig? config = null;
             try
             {
                 string json = File.ReadAllText("commandconfig.json");
-                config = JsonConvert.DeserializeObject<CommandConfig>(json);
+                config = JsonConvert.DeserializeObject<CosmosConsoleConfig>(json);
             }
             catch (Exception e)
             {
                 System.Console.WriteLine("Exception when deserializing commandconfig.json: " + e);
-                config = new CommandConfig();
+                config = new CosmosConsoleConfig();
             }
 
             LogParser = new LogParser();
