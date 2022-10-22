@@ -169,7 +169,7 @@ namespace CosmosConsoleRemote.Views
 
         private void CommandInputBox_OnTextChanged(object? sender, EventArgs e)
         {
-            if (autoCompleteProvider == null || CommandInputBox.SelectedItem != null)
+            if (autoCompleteProvider == null || (string?) CommandInputBox.SelectedItem == CommandInputBox.Text)
                 return;
             
             if (autoCompleteProvider.HasUpdatedSuggestions(CommandInputBox.Text, out string commandFormatHint, out List<string> suggestions))
