@@ -106,7 +106,6 @@ namespace CosmosConsoleRemote.Views
             }
         }
         
-
         private void HandleClosed(object? sender, EventArgs e)
         {
             Settings.Current.sizeX = ClientSize.Width;

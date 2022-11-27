@@ -102,7 +102,7 @@ namespace CosmosConsoleRemote
 
             switch (split[0])
             {
-                case "color": return $"<Span Foreground='{split[1]}'>";
+                case "color": return $"<Span Foreground='{ParseColor(split[1])}'>";
                 case "size": return $"<Span FontSize='{split[1]}'>";
                 default: return "";
             }
@@ -119,6 +119,40 @@ namespace CosmosConsoleRemote
                 case "/color": return "</Span>";
                 case "/size": return "</Span>";
                 default: return "";
+            }
+        }
+
+        private static string ParseColor(string color)
+        {
+            string col = color.ToLower();
+            switch (col)
+            {
+                    case "aqua":
+                    case "black":
+                    case "blue": 
+                    case "brown":
+                    case "cyan":
+                    case "darkblue":
+                    case "fuchsia":
+                    case "green":
+                    case "lightblue":
+                    case "lime":
+                    case "magenta":
+                    case "maroon":
+                    case "navy":
+                    case "olive":
+                    case "orange":
+                    case "purple":
+                    case "red":
+                    case "silver":
+                    case "teal":
+                    case "white":
+                    case "yellow":
+                        return col;
+                    
+                    case "grey": return "gray";
+                    default: return "white";
+
             }
         }
     }
