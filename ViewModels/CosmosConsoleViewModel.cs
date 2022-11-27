@@ -230,7 +230,7 @@ namespace CosmosConsoleRemote.ViewModels
                     line = $"<color=red>{log}</color>";
                     break;
                 case LogType.ECHO:
-                    line = $"<color=gray>> {log}</color>";
+                    line = $"<color=grey>> {log}</color>";
                     break;
             }
             
