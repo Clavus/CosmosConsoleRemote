@@ -124,7 +124,7 @@ namespace CosmosConsoleRemote
 
         private static string ParseColor(string color)
         {
-            string col = color.ToLower();
+            string col = color.ToLower().Trim('\"', '\'');
             switch (col)
             {
                     case "aqua":
