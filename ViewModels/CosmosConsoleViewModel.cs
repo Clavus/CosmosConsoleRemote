@@ -136,12 +136,7 @@ namespace CosmosConsoleRemote.ViewModels
                 
                 Console.Update();
                 LogParser.Process();
-
-                if (IsConnected && (Console.Networker.NetworkMode != NetworkMode.CLIENT || !Console.Networker.Client.IsConnected))
-                {
-                    IsConnected = false;
-                    ConnectionPanelTitle = REMOTE_NOT_CONNECTED;
-                }
+                UpdatePanelConnectionStatus();
             }
         }
 
@@ -188,12 +183,6 @@ namespace CosmosConsoleRemote.ViewModels
                 username = CredentialsUsername,
                 password = CredentialsPassword
             });
-
-            IsConnected = (Console.Networker.NetworkMode == NetworkMode.CLIENT && Console.Networker.Client.IsConnected);
-            if (IsConnected)
-                ConnectedAddressText = $"Connected to: {Console.Networker.Client.ServerAddress}";
-            
-            ConnectionPanelTitle = isConnected ? REMOTE_CONNECTED : REMOTE_NOT_CONNECTED;
         }
         
         private void OnDisconnectCommand()
@@ -202,7 +191,6 @@ namespace CosmosConsoleRemote.ViewModels
                 Console.Log("Disconnecting Cosmos Console network client from server");
 
             Console.Networker.StopClient();
-            ConnectionPanelTitle = REMOTE_NOT_CONNECTED;
         }
 
         private void HandleLocalServerFound(IPEndPoint endPoint)
@@ -212,6 +200,26 @@ namespace CosmosConsoleRemote.ViewModels
 
             if (AvailableLanAddresses.Count == 1)
                 SelectedLanAddress = AvailableLanAddresses[0];
+        }
+
+        private void UpdatePanelConnectionStatus()
+        {
+            bool wasConnected = IsConnected;
+            IsConnected = (Console.Networker.NetworkMode == NetworkMode.CLIENT && Console.Networker.Client.IsConnected);
+
+            if (wasConnected != IsConnected)
+            {
+                if (IsConnected)
+                {
+                    ConnectedAddressText = $"Connected to: {Console.Networker.Client.ServerAddress}";
+                    ConnectionPanelTitle = REMOTE_CONNECTED;
+                }
+                else
+                {
+                    ConnectedAddressText = "";
+                    ConnectionPanelTitle = REMOTE_NOT_CONNECTED;
+                }
+            }
         }
         
         private void HandleConsoleLogEvent(string log, LogType logType)
