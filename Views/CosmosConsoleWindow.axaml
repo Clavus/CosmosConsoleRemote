@@ -86,7 +86,7 @@
                         </Button>
                     </StackPanel>
                     
-                    <StackPanel x:Name="ConnectionConnectedPanel" IsVisible="True" Spacing="5">
+                    <StackPanel x:Name="ConnectionConnectedPanel" IsVisible="False" Spacing="5">
                         <TextBlock Text="{Binding ConnectedAddressText}">Connected to:</TextBlock>
                         <Button Width="240" Height="40" Command="{Binding DisconnectCommand}">
                             <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Orientation="Horizontal" Spacing="10">
