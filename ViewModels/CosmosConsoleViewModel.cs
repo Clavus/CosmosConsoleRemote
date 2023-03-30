@@ -113,6 +113,7 @@ namespace CosmosConsoleRemote.ViewModels
             
             Console = CosmosConsole.CreateNetworked(config, new LiteNetClientOnlyNetworkFactory());
             Console.SetupBuiltInCommands();
+            Console.SetExecCommandFilePaths(new []{ Path.GetDirectoryName(System.Reflection.Assembly.GetEntryAssembly().Location) });
             Console.OnLogEvent += HandleConsoleLogEvent;
             Network.OnLocalServerFound += HandleLocalServerFound;
 
